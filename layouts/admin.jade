@@ -35,7 +35,14 @@ html
                 li: a(href='/admin/administrators/') Administrators
                 li: a(href='/admin/admin-groups/') Admin Groups
           form.navbar-form.pull-right#_search
-
+          ul.nav.navbar-nav.pull-right
+            if user && user.username
+              if user.roles
+                if user.roles.account
+                  li: a(href='/account/')
+                    i.fa.fa-account
+                    |  Account
+            li: a(href='/') Home
     div.page
       div.container
         block body

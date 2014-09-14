@@ -64,6 +64,9 @@ app.use(function(req, res, next) {
   res.locals.user = {};
   res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();
   res.locals.user.username = req.user && req.user.username;
+  if (req.user && req.user.roles) {
+    res.locals.user = req.user;
+  }
   next();
 });
 

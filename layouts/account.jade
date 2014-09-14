@@ -22,6 +22,13 @@ html
             li: a(href='/account/') My Account
             li: a(href='/account/settings/') Settings
           ul.nav.navbar-nav.pull-right
+            if user && user.username
+              if user.roles
+                if user.roles.admin
+                  li: a(href='/admin/')
+                    i.fa.fa-admin
+                    |  Admin
+            li: a(href='/') Home
             li: a(href='/logout/')
               i.fa.fa-user
               |  Sign Out

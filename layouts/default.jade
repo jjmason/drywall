@@ -25,6 +25,15 @@ html
             li: a(href='/contact/') Contact
           ul.nav.navbar-nav.navbar-right
             if user && user.username
+              if user.roles
+                if user.roles.account
+                  li: a(href='/account/')
+                    i.fa.fa-account
+                    |  Account
+                if user.roles.admin
+                  li: a(href='/admin/')
+                    i.fa.fa-admin
+                    |  Admin
               li: a(href='#{user.defaultReturnUrl}')
                 i.fa.fa-user
                 |  #{user.username}
