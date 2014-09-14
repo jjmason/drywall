@@ -1,8 +1,7 @@
 'use strict';
 
 //dependencies
-var config = require('./config'),
-    express = require('express'),
+var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -14,84 +13,93 @@ var config = require('./config'),
     helmet = require('helmet'),
     csrf = require('csurf');
 
-//create express app
-var app = express();
+function create (config) {
 
-//keep reference to config
-app.config = config;
+  //create express app
+  var app = express();
 
-//setup the web server
-app.server = http.createServer(app);
+  //keep reference to config
+  app.config = config;
 
-//setup mongoose
-app.db = mongoose.createConnection(config.mongodb.uri);
-app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
-app.db.once('open', function () {
-  //and... we have a data store
-});
 
-//config data models
-require('./models')(app, mongoose);
+  //setup mongoose
+  app.db = mongoose.createConnection(config.mongodb.uri);
+  app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
+  app.db.once('open', function () {
+    //and... we have a data store
+  });
 
-//settings
-app.disable('x-powered-by');
-app.set('port', config.port);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+  //config data models
+  require('./models')(app, mongoose);
 
-//middleware
-app.use(require('morgan')('dev'));
-app.use(require('compression')());
-app.use(require('serve-static')(path.join(__dirname, 'public')));
-app.use(require('method-override')());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser(config.cryptoKey));
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: config.cryptoKey,
-  store: new mongoStore({ url: config.mongodb.uri })
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(csrf({ cookie: { signed: true } }));
-helmet(app);
+  //settings
+  app.disable('x-powered-by');
+  app.set('port', config.port);
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'jade');
 
-//response locals
-app.use(function(req, res, next) {
-  res.cookie('_csrfToken', req.csrfToken());
-  res.locals.user = {};
-  res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();
-  res.locals.user.username = req.user && req.user.username;
-  if (req.user && req.user.roles) {
-    res.locals.user = req.user;
-  }
-  next();
-});
+  //middleware
+  app.use(require('morgan')('dev'));
+  app.use(require('compression')());
+  app.use(require('serve-static')(path.join(__dirname, 'public')));
+  app.use(require('method-override')());
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(cookieParser(config.cryptoKey));
+  app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: config.cryptoKey,
+    store: new mongoStore({ url: config.mongodb.uri })
+  }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(csrf({ cookie: { signed: true } }));
+  helmet(app);
 
-//global locals
-app.locals.projectName = app.config.projectName;
-app.locals.copyrightYear = new Date().getFullYear();
-app.locals.copyrightName = app.config.companyName;
-app.locals.cacheBreaker = 'br34k-01';
+  //response locals
+  app.use(function(req, res, next) {
+    res.cookie('_csrfToken', req.csrfToken());
+    res.locals.user = {};
+    res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();
+    res.locals.user.username = req.user && req.user.username;
+    if (req.user && req.user.roles) {
+      res.locals.user = req.user;
+    }
+    next();
+  });
 
-//setup passport
-require('./passport')(app, passport);
+  //global locals
+  app.locals.projectName = app.config.projectName;
+  app.locals.copyrightYear = new Date().getFullYear();
+  app.locals.copyrightName = app.config.companyName;
+  app.locals.cacheBreaker = app.config.cacheBreaker || 'br34k-01';
 
-//setup routes
-require('./routes')(app, passport);
+  //setup passport
+  require('./passport')(app, passport);
 
-//custom (friendly) error handler
-app.use(require('./views/http/index').http500);
+  //setup routes
+  require('./routes')(app, passport);
 
-//setup utilities
-app.utility = {};
-app.utility.sendmail = require('./util/sendmail');
-app.utility.slugify = require('./util/slugify');
-app.utility.workflow = require('./util/workflow');
+  //custom (friendly) error handler
+  app.use(require('./views/http/index').http500);
 
-//listen up
-app.server.listen(app.config.port, function(){
-  //and... we're live
-});
+  //setup utilities
+  app.utility = require('./util/');
+  return app;
+}
+
+exports = create;
+
+if (!module.parent) {
+  var config = require('./config');
+
+  var app = create(config);
+  //setup the web server
+  app.server = http.createServer(app);
+
+  //listen up
+  app.server.listen(app.config.port, function(){
+    //and... we're live
+  });
+}
