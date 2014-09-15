@@ -3,8 +3,25 @@
   "version": "0.14.4",
   "private": true,
   "scripts": {
-    "postinstall": "node build.js",
+    "drywall-compile": "node build.js",
     "start": "node app.js"
+  },
+  "files": [
+    "layouts/",
+    "public/",
+    "schema/",
+    "util/",
+    "views/",
+    "app.js",
+    "build.js",
+    "bower.json",
+    "Gruntfile.js",
+    "models.js",
+    "passport.js",
+    "routes.js"
+  ],
+  "bin": {
+    "drywall-compile": "./build.js"
   },
   "directories": {
     "layouts": "layouts",
