@@ -6,6 +6,13 @@
     "postinstall": "node build.js",
     "start": "node app.js"
   },
+  "directories": {
+    "layouts": "layouts",
+    "public": "public",
+    "schema": "schema",
+    "util": "util",
+    "views": "views"
+  },
   "dependencies": {
     "async": "^0.9.0",
     "bcrypt": "^0.8.0",
