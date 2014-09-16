@@ -7,10 +7,10 @@ function build ( ) {
   // grunt.loadNpmTasks('grunt-contrib-less');
   // grunt.loadNpmTasks('grunt-newer');
   var path = require('path');
+  var bower = require('bower');
   console.log("DIR", __dirname);
   var orig_dir = process.cwd( );
   process.cwd(__dirname);
-  var bower = require('bower');
   bower.commands.install( )
   .on('end', function (installed) {
     process.cwd(orig_dir);
