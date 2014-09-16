@@ -1,18 +1,19 @@
 doctype html
 html
   head
+    base(href='#{links.base}')
     block head
       title #{title}
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(rel='stylesheet', href='/layouts/core.min.css?#{cacheBreaker}')
-    link(rel='stylesheet', href='/layouts/admin.min.css?#{cacheBreaker}')
+    link(rel='stylesheet', href='layouts/core.min.css?#{cacheBreaker}')
+    link(rel='stylesheet', href='layouts/admin.min.css?#{cacheBreaker}')
     block neck
   body
     div.navbar.navbar-inverse.navbar-fixed-top
       div.container
         div.navbar-header
-          a.navbar-brand(href='/admin/')
-            img.navbar-logo(src='/media/logo-symbol-64x64.png')
+          a.navbar-brand(href='admin/')
+            img.navbar-logo(src='media/logo-symbol-64x64.png')
             span.navbar-brand-label #{projectName}
           button.navbar-toggle.collapsed(data-toggle='collapse', data-target='.my-navbar-collapse')
             span.icon-bar
@@ -26,23 +27,23 @@ html
                 span.caret
               ul.dropdown-menu
                 li.dropdown-header Pivoted Settings
-                li: a(href='/admin/statuses/') Statuses
-                li: a(href='/admin/categories/') Categories
+                li: a(href='admin/statuses/') Statuses
+                li: a(href='admin/categories/') Categories
                 li.divider
                 li.dropdown-header User Admin
-                li: a(href='/admin/users/') Users
-                li: a(href='/admin/accounts/') Accounts
-                li: a(href='/admin/administrators/') Administrators
-                li: a(href='/admin/admin-groups/') Admin Groups
+                li: a(href='admin/users/') Users
+                li: a(href='admin/accounts/') Accounts
+                li: a(href='admin/administrators/') Administrators
+                li: a(href='admin/admin-groups/') Admin Groups
           form.navbar-form.pull-right#_search
           ul.nav.navbar-nav.pull-right
             if user && user.username
               if user.roles
                 if user.roles.account
-                  li: a(href='/account/')
+                  li: a(href='account/')
                     i.fa.fa-account
                     |  Account
-            li: a(href='/') Home
+            li: a(href='') Home
     div.page
       div.container
         block body
@@ -53,12 +54,12 @@ html
           span.copyright.pull-right
             |&#169; #{copyrightYear} #{copyrightName}
           ul.links
-            li: a(href='/') Home
-            li: a(href='/logout/') Sign Out
+            li: a(href='') Home
+            li: a(href='logout/') Sign Out
           div.clearfix
 
     div.ajax-spinner
-      img(src='/media/ajax-pulse.gif')
+      img(src='media/ajax-pulse.gif')
 
     script(type='text/template', id='tmpl-_search')
       div.dropdown
@@ -74,8 +75,8 @@ html
       li.dropdown-header no docs matched
 
     //if lte IE 9
-      script(src='/layouts/ie-sucks.min.js?#{cacheBreaker}')
-    script(src='/layouts/core.min.js?#{cacheBreaker}')
-    script(src='/layouts/admin.min.js?#{cacheBreaker}')
+      script(src='layouts/ie-sucks.min.js?#{cacheBreaker}')
+    script(src='layouts/core.min.js?#{cacheBreaker}')
+    script(src='layouts/admin.min.js?#{cacheBreaker}')
 
     block feet

@@ -219,9 +219,17 @@ exports.loginFacebook = function(req, res, next){
 };
 
 exports.loginGoogle = function(req, res, next){
-  req._passport.instance.authenticate('google', { callbackURL: '/login/google/callback/' }, function(err, user, info) {
+  var base = res.locals.links.base;
+  var links = {
+    login: req.urlize.urlize(base, 'login/').toString( )
+  , callback: req.urlize.urlize(base,'login/google/callback/').toString( )
+  };
+  console.log(links);
+  console.log(res.locals);
+  req._passport.instance.authenticate('google', { callbackURL: links.callback }, function(err, user, info) {
+    console.log('AUTHED', err, user, info);
     if (!info || !info.profile) {
-      return res.redirect('/login/');
+      return res.redirect(links.login);
     }
 
     req.app.db.models.User.findOne({ 'google.id': info.profile.id }, function(err, user) {

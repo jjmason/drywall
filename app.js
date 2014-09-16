@@ -41,6 +41,18 @@ function create (config) {
   app.set('views', [ path.join(__dirname, 'views')
          ].concat((config.extra_views || [ ]).map(path.resolve)));
   app.set('view engine', 'jade');
+  app.set('http_path_prefix', config.http_path_prefix || '');
+
+  var prefix = {
+    path: app.get('http_path_prefix')
+  };
+  var links = {
+    prefix: prefix.path
+  , login: path.join(prefix.path, 'login')
+  , signup: path.join(prefix.path, 'signup')
+  , account:  path.join(prefix.path, 'account', 'settings')
+  };
+  app.set('links', links);
 
   //middleware
   app.use(function (req, res, next) {
@@ -70,7 +82,7 @@ function create (config) {
     res.cookie('_csrfToken', req.csrfToken());
     res.locals.urlize = req.urlize.urlize;
     res.locals.links = {
-      base: req.urlize.urlize('/').urlize(config.http_path_prefix || '')
+      base: req.urlize.urlize('/', config.http_path_prefix || '')
     };
     res.locals.user = {};
     res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();

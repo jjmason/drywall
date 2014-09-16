@@ -4,10 +4,10 @@ block head
   title Sign Up
 
 block neck
-  link(rel='stylesheet', href='/views/signup/index.min.css?#{cacheBreaker}')
+  link(rel='stylesheet', href='views/signup/index.min.css?#{cacheBreaker}')
 
 block feet
-  script(src='/views/signup/index.min.js?#{cacheBreaker}')
+  script(src='views/signup/index.min.js?#{cacheBreaker}')
 
 block body
   div.row
@@ -24,26 +24,26 @@ block body
               button.close(type='button', data-dismiss='alert') &times;
               |#{oauthMessage}&nbsp;
               b
-                a(href='/login/') Login Here
+                a(href='login/') Login Here
         div.btn-group.btn-group-justified
           if oauthTwitter
-            a.btn.btn-info(href='/signup/twitter/')
+            a.btn.btn-info(href='signup/twitter/')
               i.fa.fa-twitter.fa-lg
               |  Twitter
           if oauthGitHub
-            a.btn.btn-info(href='/signup/github/')
+            a.btn.btn-info(href='signup/github/')
               i.fa.fa-github.fa-lg
               |  GitHub
           if oauthFacebook
-            a.btn.btn-info(href='/signup/facebook/')
+            a.btn.btn-info(href='signup/facebook/')
               i.fa.fa-facebook-square.fa-lg
               |  Facebook
           if oauthGoogle
-            a.btn.btn-info(href='/signup/google/')
+            a.btn.btn-info(href='signup/google/')
               i.fa.fa-google-plus-square.fa-lg
               |  Google
           if oauthTumblr
-            a.btn.btn-info(href='/signup/tumblr/')
+            a.btn.btn-info(href='signup/tumblr/')
               i.fa.fa-tumblr-square.fa-lg
               |  Tumblr
     div.col-sm-6.marketing
