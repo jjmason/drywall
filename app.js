@@ -11,6 +11,8 @@ var express = require('express'),
     passport = require('passport'),
     mongoose = require('mongoose'),
     helmet = require('helmet'),
+    multiViews = require('multi-views'),
+    urlize = require('nurlize'),
     csrf = require('csurf');
 
 function create (config) {
@@ -35,10 +37,16 @@ function create (config) {
   //settings
   app.disable('x-powered-by');
   app.set('port', config.port);
-  app.set('views', path.join(__dirname, 'views'));
+  multiViews.setupMultiViews(app);
+  app.set('views', [ path.join(__dirname, 'views')
+         ].concat((config.extra_views || [ ]).map(path.resolve)));
   app.set('view engine', 'jade');
 
   //middleware
+  app.use(function (req, res, next) {
+    req.urlize = urlize(req.protocol + "://" + req.get('host') + req.originalUrl);
+    next( );
+  });
   app.use(require('morgan')('dev'));
   app.use(require('compression')());
   app.use(require('serve-static')(path.join(__dirname, 'public')));
@@ -60,6 +68,10 @@ function create (config) {
   //response locals
   app.use(function(req, res, next) {
     res.cookie('_csrfToken', req.csrfToken());
+    res.locals.urlize = req.urlize.urlize;
+    res.locals.links = {
+      base: req.urlize.urlize('/').urlize(config.http_path_prefix || '')
+    };
     res.locals.user = {};
     res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();
     res.locals.user.username = req.user && req.user.username;
@@ -89,7 +101,7 @@ function create (config) {
   return app;
 }
 
-exports = create;
+module.exports = create;
 
 if (!module.parent) {
   var config = require('./config');
