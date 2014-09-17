@@ -13,7 +13,7 @@ function build ( ) {
   process.cwd(__dirname);
   bower.commands.install( )
   .on('end', function (installed) {
-    process.cwd(orig_dir);
+    // process.cwd(orig_dir);
     var file = path.resolve(__dirname, 'Gruntfile');
     grunt.file.setBase(path.resolve(__dirname));
     var config = require(file)
