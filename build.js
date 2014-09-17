@@ -16,9 +16,8 @@ function build ( ) {
     process.cwd(orig_dir);
     var file = path.resolve(__dirname, 'Gruntfile');
     var config = require(file)
-    config(grunt);
     grunt.file.setBase(path.resolve(__dirname));
-    console.log(process.env.FORCE_BUILD);
+    config(grunt);
     console.log('grunt running');
     grunt.tasks(['build']);
     console.log('grunt finished');
