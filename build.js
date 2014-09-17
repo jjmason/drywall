@@ -6,6 +6,7 @@ function build ( ) {
   // grunt.loadNpmTasks('grunt-contrib-less');
   // grunt.loadNpmTasks('grunt-newer');
   var path = require('path');
+  var grunt = require('grunt');
   var bower = require('bower');
   console.log("DIR", __dirname);
   var orig_dir = process.cwd( );
@@ -14,7 +15,6 @@ function build ( ) {
   .on('end', function (installed) {
     var file = path.resolve(__dirname, 'Gruntfile');
     process.cwd(orig_dir);
-    var grunt = require('grunt');
     grunt.file.setBase(path.resolve(__dirname));
     var config = require(file)
     config(grunt);
