@@ -15,8 +15,8 @@ function build ( ) {
   .on('end', function (installed) {
     process.cwd(orig_dir);
     var file = path.resolve(__dirname, 'Gruntfile');
-    var config = require(file)
     grunt.file.setBase(path.resolve(__dirname));
+    var config = require(file)
     config(grunt);
     console.log('grunt running');
     grunt.tasks(['build']);
