@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 function build ( ) {
-  var grunt = require('grunt');
   // grunt.loadNpmTasks('grunt-contrib-copy');
   // grunt.loadNpmTasks('grunt-contrib-uglify');
   // grunt.loadNpmTasks('grunt-contrib-less');
@@ -13,8 +12,9 @@ function build ( ) {
   process.cwd(__dirname);
   bower.commands.install( )
   .on('end', function (installed) {
-    // process.cwd(orig_dir);
     var file = path.resolve(__dirname, 'Gruntfile');
+    process.cwd(orig_dir);
+    var grunt = require('grunt');
     grunt.file.setBase(path.resolve(__dirname));
     var config = require(file)
     config(grunt);
