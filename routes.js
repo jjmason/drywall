@@ -31,6 +31,7 @@ function ensureAccount(req, res, next) {
 
 exports = module.exports = function(app, passport) {
   var links = app.get('links');
+  console.log('LINKS', links);
   //front end
   app.get('/', require('./views/index').init);
   app.get('/about/', require('./views/about/index').init);

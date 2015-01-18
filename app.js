@@ -48,11 +48,12 @@ function create (config) {
   };
   var links = {
     prefix: prefix.path
-  , login: path.join(prefix.path, 'login')
-  , signup: path.join(prefix.path, 'signup')
-  , account:  path.join(prefix.path, 'account', 'settings')
+  , login: path.normalize(path.join(prefix.path || '', '/login'))
+  , signup: path.normalize(path.join(prefix.path || '', '/signup'))
+  , account:  path.normalize(path.join(prefix.path || '', '/account', 'settings'))
   };
   app.set('links', links);
+  console.log("SET LINKS", links);
 
   //middleware
   app.use(function (req, res, next) {
@@ -99,6 +100,8 @@ function create (config) {
   app.locals.copyrightName = app.config.companyName;
   app.locals.cacheBreaker = app.config.cacheBreaker || 'br34k-01';
 
+  //setup utilities
+  app.utility = require('./util/');
   //setup passport
   require('./passport')(app, passport);
 
@@ -108,8 +111,6 @@ function create (config) {
   //custom (friendly) error handler
   app.use(require('./views/http/index').http500);
 
-  //setup utilities
-  app.utility = require('./util/');
   return app;
 }
 

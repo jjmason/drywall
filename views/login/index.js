@@ -221,10 +221,11 @@ exports.loginFacebook = function(req, res, next){
 exports.loginGoogle = function(req, res, next){
   var base = res.locals.links.base;
   var links = {
-    login: req.urlize.urlize(base, 'login/').toString( )
-  , callback: req.urlize.urlize(base,'login/google/callback/').toString( )
+    login: req.urlize.urlize(base, './login/').toString( )
+  , callback: req.urlize.urlize(base,'./login/google/callback/').toString( )
   };
-  console.log(links);
+  console.log('login LINKS', links);
+  console.log('FROM APP', req.app.get('links'));
   console.log(res.locals);
   req._passport.instance.authenticate('google', { callbackURL: links.callback }, function(err, user, info) {
     console.log('AUTHED', err, user, info);
